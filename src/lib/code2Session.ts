@@ -14,7 +14,11 @@ export interface Code2SessionRes {
  * 小程序登录
  * https://developers.weixin.qq.com/miniprogram/dev/OpenApiDoc/user-login/code2Session.html
  */
-export async function code2Session(this: WxMp, param: Code2SessionParam) {
+export async function code2Session(
+  this: WxMp,
+  param: Code2SessionParam | string,
+) {
+  if (typeof param === "string") param = { js_code: param };
   const { status, data } = await this.request<Code2SessionRes>({
     url: "/sns/jscode2session",
     method: "GET",

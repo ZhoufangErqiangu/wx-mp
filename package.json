@@ -1,6 +1,16 @@
 {
   "name": "wx-mp",
   "version": "0.0.0",
+  "description": "communicate to wx mp",
+  "keywords": [
+    "weichat",
+    "weixin",
+    "wx",
+    "node",
+    "miniapp",
+    "mini program",
+    "wechat share"
+  ],
   "license": "MIT",
   "author": "Alex",
   "packageManager": "yarn@1.22.19",
