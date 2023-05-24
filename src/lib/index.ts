@@ -97,7 +97,7 @@ export class WxMp {
    */
   public getQRCode = getQRCode;
   /**
-   * 登陆
+   * 小程序 登陆
    */
   public code2Session = code2Session;
 

@@ -22,8 +22,9 @@ export interface GetUserPhoneNumberRes {
  */
 export async function getUserPhoneNumber(
   this: WxMp,
-  data: GetUserPhoneNumberData,
+  data: GetUserPhoneNumberData | string,
 ) {
+  if (typeof data === "string") data = { code: data };
   const { status, data: res } = await this.request<GetUserPhoneNumberRes>({
     url: "/wxa/business/getuserphonenumber",
     method: "POST",
