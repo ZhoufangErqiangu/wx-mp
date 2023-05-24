@@ -14,9 +14,15 @@
   "license": "MIT",
   "author": "Alex",
   "repository": "https://github.com/ZhoufangErqiangu/wx-mp",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist/**/*.js",
+    "dist/**/*.d.ts"
+  ],
   "packageManager": "yarn@1.22.19",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc -p tsconfig.build.json",
     "test": "jest",
     "publish": "npm publish --access=public"
   },
