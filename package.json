@@ -1,6 +1,6 @@
 {
-  "name": "wx-mp",
-  "version": "0.0.0",
+  "name": "@liuhlightning/wx-mp",
+  "version": "0.0.1",
   "description": "communicate to wx mp",
   "keywords": [
     "weichat",
@@ -13,6 +13,7 @@
   ],
   "license": "MIT",
   "author": "Alex",
+  "repository": "https://github.com/ZhoufangErqiangu/wx-mp",
   "packageManager": "yarn@1.22.19",
   "scripts": {
     "build": "tsc",
