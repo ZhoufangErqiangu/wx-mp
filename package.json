@@ -17,7 +17,8 @@
   "packageManager": "yarn@1.22.19",
   "scripts": {
     "build": "tsc",
-    "test": "jest"
+    "test": "jest",
+    "publish": "npm publish --access=public"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.21.5",
