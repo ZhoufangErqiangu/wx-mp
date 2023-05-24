@@ -1,6 +1,7 @@
 {
   "name": "wx-mp",
   "version": "0.0.0",
+  "description": "communicate to wx mp",
   "license": "MIT",
   "author": "Alex",
   "packageManager": "yarn@1.22.19",
