@@ -9,6 +9,13 @@ import { normalizeUrl } from "../util/normalizeUrl";
 import { paramsToString } from "../util/paramsToString";
 import { timestamp } from "../util/timestamp";
 import {
+  checkOAuthAccessToken,
+  generateOAuthUrl,
+  getOAuthAccessToken,
+  getOAuthUserInfo,
+  getRefreshOAuthAccessToken,
+} from "./OAuth";
+import {
   AccessToken,
   checkAccessTokenExpire,
   getAccessToken,
@@ -52,6 +59,10 @@ export interface WxMpParam {
    */
   axiosConfig?: CreateAxiosDefaults;
   /**
+   * OAuth的回调url
+   */
+  redirectUrl?: string;
+  /**
    * 启用调试, 打印所有log
    */
   debug?: boolean;
@@ -71,6 +82,7 @@ export class WxMp {
   public request: <T = any, R = AxiosResponse<T>, D = any>(
     config: AxiosRequestConfig<D>,
   ) => Promise<R>;
+  public redirectUrl?: string;
   public debug: boolean;
 
   /**
@@ -105,6 +117,26 @@ export class WxMp {
    * 小程序 登陆
    */
   public code2Session = code2Session;
+  /**
+   * OAuth 生成用户授权url
+   */
+  public generateOAuthUrl = generateOAuthUrl;
+  /**
+   * OAuth 获取access token
+   */
+  public getOAuthAccessToken = getOAuthAccessToken;
+  /**
+   * OAuth 刷新access token
+   */
+  public getRefreshOAuthAccessToken = getRefreshOAuthAccessToken;
+  /**
+   * OAuth 获取用户信息
+   */
+  public getOAuthUserInfo = getOAuthUserInfo;
+  /**
+   * OAuth 检查access token是否有效
+   */
+  public checkOAuthAccessToken = checkOAuthAccessToken;
 
   static normalizeUrl = normalizeUrl;
   public normalizeUrl = normalizeUrl;
@@ -119,6 +151,7 @@ export class WxMp {
       useBackupBaseURL,
       timeout = 10000,
       axiosConfig = {},
+      redirectUrl,
       debug = false,
     } = param;
     this.appId = appId;
@@ -131,6 +164,7 @@ export class WxMp {
       timeout,
     });
     this.request = this.service.request;
+    this.redirectUrl = redirectUrl;
     // debug
     this.debug = debug;
     if (this.debug) {
