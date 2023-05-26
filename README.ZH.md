@@ -113,7 +113,7 @@ const {
   openid,
   unionid,
   session_key
-} = await wxMp.code2Session("code from miniapp");
+} = await wxMp.code2Session(codeFromMiniapp);
 ```
 
 之后使用openid unionid session_key维护自己的登陆状态
@@ -121,10 +121,35 @@ const {
 #### 小程序获取用户手机号
 
 ```typescript
-const { phone_info } = await wxMp.getUserPhoneNumber("code from miniapp");
+const { phone_info } = await wxMp.getUserPhoneNumber(codeFromMiniapp);
 if(!phone_info) throw new Error("null phone info");
 const { phoneNumber } = phone_info;
 ```
+
+#### OAuth网页授权
+
+```typescript
+const wxMp = new WxMp({
+  appId: "your app id",
+  appSecret: "your app secret",
+  redirectUrl: "https://domain.com/some_url",
+});
+
+const url = wxMp.generateOAuthUrl("snsapi_userinfo");
+// or
+const url = wxMp.generateOAuthUrl({
+  redirectUrl: "https://domain.com/some_url",
+  scope: "snsapi_userinfo",
+  state: "some_state",
+});
+
+// 获取access token, 这个token是用户授权的token, 和前述accessToken无关
+const accessToken = await wxMp.getOAuthAccessToken(tokenFromFront);
+
+// 获取用户信息
+const { openid, nickname, sex, headimgurl } = await wxMp.getOAuthUserInfo(accessTokenGetByAbove);
+```
+
 
 ## 维护access token和ticket
 

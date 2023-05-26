@@ -1,16 +1,21 @@
 import { WxMp } from ".";
 import { BaseRes } from "./baseRes";
 
+export type OAuthScope = "snsapi_base" | "snsapi_userinfo";
+
 export interface GenerateUrlParam {
   redirectUrl?: string;
-  scope: string;
+  scope: OAuthScope;
   state?: string;
   forcePopup?: boolean;
 }
 /**
  * https://developers.weixin.qq.com/doc/offiaccount/OA_Web_Apps/Wechat_webpage_authorization.html
  */
-export function generateOAuthUrl(this: WxMp, param: GenerateUrlParam | string) {
+export function generateOAuthUrl(
+  this: WxMp,
+  param: GenerateUrlParam | OAuthScope,
+) {
   const url = new URL("https://open.weixin.qq.com/connect/oauth2/authorize");
   url.hash = "#wechat_redirect";
   url.searchParams.set("appid", this.appId);
