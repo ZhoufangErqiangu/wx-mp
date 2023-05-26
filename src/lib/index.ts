@@ -14,7 +14,7 @@ import {
   getOAuthAccessToken,
   getOAuthUserInfo,
   getRefreshOAuthAccessToken,
-} from "./OAuth";
+} from "./oAuth";
 import {
   AccessToken,
   checkAccessTokenExpire,
