@@ -59,9 +59,7 @@ export interface WxMpParam {
 }
 ```
 
-### 功能
-
-#### access token
+### access token
 
 请求获取的access token会存储在store中, 在过期前可以直接用store的值
 
@@ -76,7 +74,7 @@ const accessToken = wxMp.checkAccessTokenExpire()
   : wxMp.accessToken;
 ```
 
-#### ticket
+### ticket
 
 请求获取的ticket会存储在store中, 在过期前可以直接用store的值
 
@@ -91,7 +89,7 @@ const ticket = wxMp.checkTicketExpire()
   : wxMp.ticket;
 ```
 
-#### URL签名
+### URL签名
 
 对微信打开的页面URL进行签名
 
@@ -106,7 +104,7 @@ const {
 
 签名完成后应返回前端用于wxjssdk交互
 
-#### 小程序登陆
+### 小程序登陆
 
 ```typescript
 const {
@@ -118,7 +116,7 @@ const {
 
 之后使用openid unionid session_key维护自己的登陆状态
 
-#### 小程序获取用户手机号
+### 小程序获取用户手机号
 
 ```typescript
 const { phone_info } = await wxMp.getUserPhoneNumber(codeFromMiniapp);
@@ -126,7 +124,7 @@ if(!phone_info) throw new Error("null phone info");
 const { phoneNumber } = phone_info;
 ```
 
-#### OAuth网页授权
+### OAuth网页授权
 
 ```typescript
 const wxMp = new WxMp({
@@ -149,7 +147,6 @@ const accessToken = await wxMp.getOAuthAccessToken(tokenFromFront);
 // 获取用户信息
 const { openid, nickname, sex, headimgurl } = await wxMp.getOAuthUserInfo(accessTokenGetByAbove);
 ```
-
 
 ## 维护access token和ticket
 
