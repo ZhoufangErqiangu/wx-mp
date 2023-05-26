@@ -51,6 +51,10 @@ export interface WxMpParam {
    * axios 配置
    */
   axiosConfig?: CreateAxiosDefaults;
+  /**
+   * 启用调试, 打印所有log
+   */
+  debug?: boolean;
 }
 
 /**
@@ -67,6 +71,7 @@ export class WxMp {
   public request: <T = any, R = AxiosResponse<T>, D = any>(
     config: AxiosRequestConfig<D>,
   ) => Promise<R>;
+  public debug: boolean;
 
   /**
    * 获取 access token
@@ -114,6 +119,7 @@ export class WxMp {
       useBackupBaseURL,
       timeout = 10000,
       axiosConfig = {},
+      debug = false,
     } = param;
     this.appId = appId;
     this.appSecret = appSecret;
@@ -125,6 +131,24 @@ export class WxMp {
       timeout,
     });
     this.request = this.service.request;
+    // debug
+    this.debug = debug;
+    if (this.debug) {
+      this.service.interceptors.request.use((config) => {
+        console.log("wx mp request url    ", config.url);
+        console.log("wx mp request method ", config.method);
+        console.log("wx mp request params ", config.params);
+        console.log("wx mp request headers", config.headers);
+        console.log("wx mp request data   ", config.data);
+        return config;
+      });
+      this.service.interceptors.response.use((res) => {
+        console.log("wx mp response status ", res.status);
+        console.log("wx mp response headers", res.headers);
+        console.log("wx mp response data   ", res.data);
+        return res;
+      });
+    }
   }
 
   /**

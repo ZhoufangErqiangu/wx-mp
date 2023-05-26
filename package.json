@@ -24,7 +24,7 @@
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "test": "jest",
-    "publish": "npm publish --access=public"
+    "publish": "npm publish"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.21.5",
