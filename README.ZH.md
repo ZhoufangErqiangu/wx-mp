@@ -7,13 +7,13 @@
 ## 使用
 
 ```bash
-npm install --save wx-mp
+npm install --save @liuhlightning/wx-mp
 # or
-yarn add wx-mp
+yarn add @liuhlightning/wx-mp
 ```
 
 ```typescript
-import { WxMp } from "../src";
+import { WxMp } from "@liuhlightning/wx-mp";
 
 const wxMp = new WxMp({
   appId: "your app id",
