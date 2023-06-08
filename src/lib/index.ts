@@ -9,6 +9,13 @@ import { normalizeUrl } from "../util/normalizeUrl";
 import { paramsToString } from "../util/paramsToString";
 import { timestamp } from "../util/timestamp";
 import {
+  checkOAuthAccessToken,
+  generateOAuthUrl,
+  getOAuthAccessToken,
+  getOAuthUserInfo,
+  getRefreshOAuthAccessToken,
+} from "./oAuth";
+import {
   AccessToken,
   checkAccessTokenExpire,
   getAccessToken,
@@ -51,6 +58,14 @@ export interface WxMpParam {
    * axios 配置
    */
   axiosConfig?: CreateAxiosDefaults;
+  /**
+   * OAuth的回调url
+   */
+  redirectUrl?: string;
+  /**
+   * 启用调试, 打印所有log
+   */
+  debug?: boolean;
 }
 
 /**
@@ -67,6 +82,8 @@ export class WxMp {
   public request: <T = any, R = AxiosResponse<T>, D = any>(
     config: AxiosRequestConfig<D>,
   ) => Promise<R>;
+  public redirectUrl?: string;
+  public debug: boolean;
 
   /**
    * 获取 access token
@@ -100,6 +117,26 @@ export class WxMp {
    * 小程序 登陆
    */
   public code2Session = code2Session;
+  /**
+   * OAuth 生成用户授权url
+   */
+  public generateOAuthUrl = generateOAuthUrl;
+  /**
+   * OAuth 获取access token
+   */
+  public getOAuthAccessToken = getOAuthAccessToken;
+  /**
+   * OAuth 刷新access token
+   */
+  public getRefreshOAuthAccessToken = getRefreshOAuthAccessToken;
+  /**
+   * OAuth 获取用户信息
+   */
+  public getOAuthUserInfo = getOAuthUserInfo;
+  /**
+   * OAuth 检查access token是否有效
+   */
+  public checkOAuthAccessToken = checkOAuthAccessToken;
 
   static normalizeUrl = normalizeUrl;
   public normalizeUrl = normalizeUrl;
@@ -114,6 +151,8 @@ export class WxMp {
       useBackupBaseURL,
       timeout = 10000,
       axiosConfig = {},
+      redirectUrl,
+      debug = false,
     } = param;
     this.appId = appId;
     this.appSecret = appSecret;
@@ -125,6 +164,25 @@ export class WxMp {
       timeout,
     });
     this.request = this.service.request;
+    this.redirectUrl = redirectUrl;
+    // debug
+    this.debug = debug;
+    if (this.debug) {
+      this.service.interceptors.request.use((config) => {
+        console.log("wx mp request url    ", config.url);
+        console.log("wx mp request method ", config.method);
+        console.log("wx mp request params ", config.params);
+        console.log("wx mp request headers", config.headers);
+        console.log("wx mp request data   ", config.data);
+        return config;
+      });
+      this.service.interceptors.response.use((res) => {
+        console.log("wx mp response status ", res.status);
+        console.log("wx mp response headers", res.headers);
+        console.log("wx mp response data   ", res.data);
+        return res;
+      });
+    }
   }
 
   /**

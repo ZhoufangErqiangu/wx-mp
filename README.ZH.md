@@ -7,13 +7,13 @@
 ## 使用
 
 ```bash
-npm install --save wx-mp
+npm install --save @liuhlightning/wx-mp
 # or
-yarn add wx-mp
+yarn add @liuhlightning/wx-mp
 ```
 
 ```typescript
-import { WxMp } from "../src";
+import { WxMp } from "@liuhlightning/wx-mp";
 
 const wxMp = new WxMp({
   appId: "your app id",
@@ -59,9 +59,7 @@ export interface WxMpParam {
 }
 ```
 
-### 功能
-
-#### access token
+### access token
 
 请求获取的access token会存储在store中, 在过期前可以直接用store的值
 
@@ -76,7 +74,7 @@ const accessToken = wxMp.checkAccessTokenExpire()
   : wxMp.accessToken;
 ```
 
-#### ticket
+### ticket
 
 请求获取的ticket会存储在store中, 在过期前可以直接用store的值
 
@@ -91,7 +89,7 @@ const ticket = wxMp.checkTicketExpire()
   : wxMp.ticket;
 ```
 
-#### URL签名
+### URL签名
 
 对微信打开的页面URL进行签名
 
@@ -106,24 +104,48 @@ const {
 
 签名完成后应返回前端用于wxjssdk交互
 
-#### 小程序登陆
+### 小程序登陆
 
 ```typescript
 const {
   openid,
   unionid,
   session_key
-} = await wxMp.code2Session("code from miniapp");
+} = await wxMp.code2Session(codeFromMiniapp);
 ```
 
 之后使用openid unionid session_key维护自己的登陆状态
 
-#### 小程序获取用户手机号
+### 小程序获取用户手机号
 
 ```typescript
-const { phone_info } = await wxMp.getUserPhoneNumber("code from miniapp");
+const { phone_info } = await wxMp.getUserPhoneNumber(codeFromMiniapp);
 if(!phone_info) throw new Error("null phone info");
 const { phoneNumber } = phone_info;
+```
+
+### OAuth网页授权
+
+```typescript
+const wxMp = new WxMp({
+  appId: "your app id",
+  appSecret: "your app secret",
+  redirectUrl: "https://domain.com/some_url",
+});
+
+const url = wxMp.generateOAuthUrl("snsapi_userinfo");
+// or
+const url = wxMp.generateOAuthUrl({
+  redirectUrl: "https://domain.com/some_url",
+  scope: "snsapi_userinfo",
+  state: "some_state",
+});
+
+// 获取access token, 这个token是用户授权的token, 和前述accessToken无关
+const accessToken = await wxMp.getOAuthAccessToken(tokenFromFront);
+
+// 获取用户信息
+const { openid, nickname, sex, headimgurl } = await wxMp.getOAuthUserInfo(accessTokenGetByAbove);
 ```
 
 ## 维护access token和ticket
