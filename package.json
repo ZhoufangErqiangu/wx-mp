@@ -1,6 +1,6 @@
 {
   "name": "@liuhlightning/wx-mp",
-  "version": "0.0.4",
+  "version": "0.1.0",
   "description": "communicate to wx mp",
   "keywords": [
     "weichat",
@@ -23,8 +23,7 @@
   "packageManager": "yarn@1.22.19",
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
-    "test": "jest",
-    "publish": "npm publish"
+    "test": "jest"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.21.5",

@@ -1,4 +1,5 @@
 import { WxMp } from ".";
+import { BaseRes } from "./baseRes";
 
 export interface Ticket {
   ticket: string;
@@ -9,9 +10,7 @@ export function checkTicketExpire(this: WxMp) {
   return Date.now() > this.ticketStore.expireAt;
 }
 
-export interface GetTicketRes {
-  errcode: number;
-  errmsg: string;
+export interface GetTicketRes extends BaseRes {
   ticket?: string;
   expires_in?: number;
 }

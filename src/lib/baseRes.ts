@@ -1,4 +1,4 @@
 export interface BaseRes {
-  errcode: number;
-  errmsg: string;
+  errcode?: number;
+  errmsg?: string;
 }

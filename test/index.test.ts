@@ -4,6 +4,7 @@ import { WxMp } from "../src";
 const wxMp = new WxMp({
   appId: "wx807d86fb6b3d4fd2",
   appSecret: "test_app_secret",
+  token: "thisisave",
   redirectUrl: "http://developers.weixin.qq.com",
 });
 
@@ -46,4 +47,15 @@ test("oauth url", () => {
   ).toBe(
     "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx807d86fb6b3d4fd2&response_type=code&redirect_uri=http%3A%2F%2Fdevelopers.weixin.qq.com&scope=snsapi_userinfo&state=STATE#wechat_redirect",
   );
+});
+
+test("verify token", () => {
+  expect(
+    wxMp.verifyToken(
+      "f469e2d31cebf3e7981727dbac4522ac3060252c",
+      "1939121145797148543",
+      "1688384379",
+      "1616797381",
+    ),
+  ).toBe("1939121145797148543");
 });

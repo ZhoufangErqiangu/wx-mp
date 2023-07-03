@@ -1,14 +1,13 @@
 import { WxMp } from ".";
+import { BaseRes } from "./baseRes";
 
 export interface Code2SessionParam {
   js_code: string;
 }
-export interface Code2SessionRes {
+export interface Code2SessionRes extends BaseRes {
   session_key: string;
   unionid: string;
   openid: string;
-  errcode: number;
-  errmsg: string;
 }
 /**
  * 小程序登录

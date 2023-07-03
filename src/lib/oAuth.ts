@@ -40,7 +40,7 @@ export function generateOAuthUrl(
   return url.toString();
 }
 
-export interface GetOAuthAccessTokenRes {
+export interface GetOAuthAccessTokenRes extends BaseRes {
   access_token: string;
   expires_in: number;
   refresh_token: string;
@@ -50,10 +50,12 @@ export interface GetOAuthAccessTokenRes {
   unionid?: string;
 }
 /**
+ * 通过code换取网页授权access_token
+ *
  * https://developers.weixin.qq.com/doc/offiaccount/OA_Web_Apps/Wechat_webpage_authorization.html
  */
-export function getOAuthAccessToken(this: WxMp, code: string) {
-  return this.request<GetOAuthAccessTokenRes>({
+export async function getOAuthAccessToken(this: WxMp, code: string) {
+  const { status, data } = await this.request<GetOAuthAccessTokenRes>({
     url: "/sns/oauth2/access_token",
     method: "GET",
     params: {
@@ -63,9 +65,17 @@ export function getOAuthAccessToken(this: WxMp, code: string) {
       code,
     },
   });
+  if (status !== 200)
+    throw new Error(`通过code换取网页授权access_token 失败 ${status}`);
+  if (data.errcode) {
+    throw new Error(
+      `通过code换取网页授权access_token 错误 ${data.errcode} ${data.errmsg}`,
+    );
+  }
+  return data;
 }
 
-export interface GetRefreshOAuthAccessTokenRes {
+export interface GetRefreshOAuthAccessTokenRes extends BaseRes {
   access_token: string;
   expires_in: number;
   refresh_token: string;
@@ -73,10 +83,15 @@ export interface GetRefreshOAuthAccessTokenRes {
   scope: string;
 }
 /**
+ * 刷新access_token
+ *
  * https://developers.weixin.qq.com/doc/offiaccount/OA_Web_Apps/Wechat_webpage_authorization.html
  */
-export function getRefreshOAuthAccessToken(this: WxMp, refreshToken: string) {
-  return this.request<GetOAuthAccessTokenRes>({
+export async function getRefreshOAuthAccessToken(
+  this: WxMp,
+  refreshToken: string,
+) {
+  const { status, data } = await this.request<GetOAuthAccessTokenRes>({
     url: "/sns/oauth2/refresh_token",
     method: "GET",
     params: {
@@ -85,6 +100,11 @@ export function getRefreshOAuthAccessToken(this: WxMp, refreshToken: string) {
       refresh_token: refreshToken,
     },
   });
+  if (status !== 200) throw new Error(`刷新access_token 失败 ${status}`);
+  if (data.errcode) {
+    throw new Error(`刷新access_token 错误 ${data.errcode} ${data.errmsg}`);
+  }
+  return data;
 }
 
 export interface GetOAuthUserInfoParam {
@@ -92,7 +112,7 @@ export interface GetOAuthUserInfoParam {
   openid: string;
   lang?: string;
 }
-export interface GetOAuthUserInfoRes {
+export interface GetOAuthUserInfoRes extends BaseRes {
   openid: string;
   nickname: string;
   sex: number;
@@ -104,11 +124,16 @@ export interface GetOAuthUserInfoRes {
   unionid?: string;
 }
 /**
+ * 拉取用户信息
+ *
  * https://developers.weixin.qq.com/doc/offiaccount/OA_Web_Apps/Wechat_webpage_authorization.html
  */
-export function getOAuthUserInfo(this: WxMp, param: GetOAuthUserInfoParam) {
+export async function getOAuthUserInfo(
+  this: WxMp,
+  param: GetOAuthUserInfoParam,
+) {
   const { accessToken, openid, lang = "zh_CN" } = param;
-  return this.request<GetOAuthUserInfoRes>({
+  const { status, data } = await this.request<GetOAuthUserInfoRes>({
     url: "/sns/userinfo",
     method: "GET",
     params: {
@@ -117,21 +142,28 @@ export function getOAuthUserInfo(this: WxMp, param: GetOAuthUserInfoParam) {
       lang,
     },
   });
+  if (status !== 200) throw new Error(`拉取用户信息 失败 ${status}`);
+  if (data.errcode) {
+    throw new Error(`拉取用户信息 错误 ${data.errcode} ${data.errmsg}`);
+  }
+  return data;
 }
 
-export interface CheckOAuthAccessTokenParam {
+export interface CheckOAuthAccessTokenParam extends BaseRes {
   accessToken: string;
   openid: string;
 }
 /**
+ * 检验授权凭证
+ *
  * https://developers.weixin.qq.com/doc/offiaccount/OA_Web_Apps/Wechat_webpage_authorization.html
  */
-export function checkOAuthAccessToken(
+export async function checkOAuthAccessToken(
   this: WxMp,
   param: CheckOAuthAccessTokenParam,
 ) {
   const { accessToken, openid } = param;
-  return this.request<BaseRes>({
+  const { status, data } = await this.request<BaseRes>({
     url: "/sns/auth",
     method: "GET",
     params: {
@@ -139,4 +171,6 @@ export function checkOAuthAccessToken(
       openid,
     },
   });
+  if (status !== 200) throw new Error(`检验授权凭证 失败 ${status}`);
+  return data;
 }

@@ -1,11 +1,10 @@
 import { WxMp } from ".";
+import { BaseRes } from "./baseRes";
 
 export interface GetUserPhoneNumberData {
   code: string;
 }
-export interface GetUserPhoneNumberRes {
-  errcode: number;
-  errmsg: string;
+export interface GetUserPhoneNumberRes extends BaseRes {
   phone_info?: {
     phoneNumber: string;
     purePhoneNumber: string;
