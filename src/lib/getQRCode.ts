@@ -1,4 +1,5 @@
 import { WxMp } from ".";
+import { BaseRes } from "./baseRes";
 
 export interface GetQRCodeData {
   path: string;
@@ -12,11 +13,7 @@ export interface GetQRCodeData {
   is_hyaline?: boolean;
   env_version?: "release" | "trial" | "develop";
 }
-export interface GetQRCodeErrorRes {
-  errcode: number;
-  errmsg: string;
-}
-export type GetQRCodeRes = Buffer | GetQRCodeErrorRes;
+export type GetQRCodeRes = Buffer | BaseRes;
 /**
  * 获取QR码
  * https://developers.weixin.qq.com/miniprogram/dev/OpenApiDoc/qrcode-link/qr-code/getQRCode.html
@@ -33,7 +30,7 @@ export async function getQRCode(this: WxMp, data: GetQRCodeData) {
   });
   if (status !== 200) throw new Error(`获取QR码 失败 ${status}`);
   if (!(res instanceof Buffer)) {
-    throw new Error(`小程序登录 错误 ${res.errcode} ${res.errmsg}`);
+    throw new Error(`获取QR码 错误 ${res.errcode} ${res.errmsg}`);
   }
   return res;
 }

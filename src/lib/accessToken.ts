@@ -1,4 +1,5 @@
 import { WxMp } from ".";
+import { BaseRes } from "./baseRes";
 
 export interface AccessToken {
   token: string;
@@ -9,9 +10,7 @@ export function checkAccessTokenExpire(this: WxMp) {
   return Date.now() + 5 * 60 * 1000 > this.accessTokenStore.expireAt;
 }
 
-export interface GetAccessTokenRes {
-  errcode: number;
-  errmsg: string;
+export interface GetAccessTokenRes extends BaseRes {
   access_token?: string;
   expires_in?: number;
 }
