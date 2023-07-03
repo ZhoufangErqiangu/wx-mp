@@ -25,6 +25,7 @@ import { getQRCode } from "./getQRCode";
 import { getSignature } from "./getSignature";
 import { getUserPhoneNumber } from "./getUserPhoneNumber";
 import { Ticket, checkTicketExpire, getTicket } from "./ticket";
+import { verifyToken } from "./verifyToken";
 
 /**
  * 微信开放平台参数
@@ -40,6 +41,10 @@ export interface WxMpParam {
    * https://developers.weixin.qq.com/doc/offiaccount/Basic_Information/Interface_field_description.html
    */
   appSecret: string;
+  /**
+   * token 用于服务器验证
+   */
+  token: string;
   /**
    * 请求的地址, 覆盖默认地址
    * https://developers.weixin.qq.com/doc/offiaccount/Basic_Information/Interface_field_description.html
@@ -75,6 +80,7 @@ export class WxMp {
   public baseURL = "https://api.weixin.qq.com";
   public appId: string;
   protected appSecret: string;
+  protected token: string;
   protected accessTokenStore: AccessToken = { token: "", expireAt: 0 };
   protected ticketStore: Ticket = { ticket: "", expireAt: 0 };
   public service: AxiosInstance;
@@ -137,6 +143,10 @@ export class WxMp {
    * OAuth 检查access token是否有效
    */
   public checkOAuthAccessToken = checkOAuthAccessToken;
+  /**
+   * 验证token
+   */
+  public verifyToken = verifyToken;
 
   static normalizeUrl = normalizeUrl;
   public normalizeUrl = normalizeUrl;
@@ -147,6 +157,7 @@ export class WxMp {
     const {
       appId,
       appSecret,
+      token,
       baseURL,
       useBackupBaseURL,
       timeout = 10000,
@@ -156,6 +167,7 @@ export class WxMp {
     } = param;
     this.appId = appId;
     this.appSecret = appSecret;
+    this.token = token;
     if (baseURL) this.baseURL = baseURL;
     else if (useBackupBaseURL) this.baseURL = "https://api2.weixin.qq.com";
     this.service = Axios.create({
