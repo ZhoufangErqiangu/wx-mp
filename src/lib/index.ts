@@ -43,8 +43,9 @@ export interface WxMpParam {
   appSecret: string;
   /**
    * token 用于服务器验证
+   * https://developers.weixin.qq.com/doc/offiaccount/Basic_Information/Access_Overview.html
    */
-  token: string;
+  token?: string;
   /**
    * 请求的地址, 覆盖默认地址
    * https://developers.weixin.qq.com/doc/offiaccount/Basic_Information/Interface_field_description.html
@@ -80,7 +81,8 @@ export class WxMp {
   public baseURL = "https://api.weixin.qq.com";
   public appId: string;
   protected appSecret: string;
-  protected token: string;
+  protected token?: string;
+  protected encodeKey?: string;
   protected accessTokenStore: AccessToken = { token: "", expireAt: 0 };
   protected ticketStore: Ticket = { ticket: "", expireAt: 0 };
   public service: AxiosInstance;
