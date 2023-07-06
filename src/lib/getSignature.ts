@@ -10,6 +10,7 @@ export interface GetSignatureData {
 
 /**
  * url签名
+ *
  * https://developers.weixin.qq.com/doc/offiaccount/OA_Web_Apps/JS-SDK.html
  */
 export function getSignature(this: WxMp, data: GetSignatureData | string) {
@@ -34,4 +35,22 @@ export function getSignature(this: WxMp, data: GetSignatureData | string) {
     url,
     signature,
   };
+}
+
+export interface GetCardSignatureData {
+  shopId?: string;
+  cardType?: string;
+  cardId?: string;
+  timestamp: number;
+  nonceStr: string;
+  signType?: "SHA1";
+}
+
+/**
+ * 卡券签名
+ *
+ * https://developers.weixin.qq.com/doc/offiaccount/OA_Web_Apps/JS-SDK.html#54
+ */
+export function getCardSignature(this: WxMp, data: GetCardSignatureData) {
+  // todo
 }

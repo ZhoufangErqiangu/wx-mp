@@ -85,6 +85,7 @@ export class WxMp {
   protected encodeKey?: string;
   protected accessTokenStore: AccessToken = { token: "", expireAt: 0 };
   protected ticketStore: Ticket = { ticket: "", expireAt: 0 };
+  protected cardTicketStore: Ticket = { ticket: "", expireAt: 0 };
   public service: AxiosInstance;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public request: <T = any, R = AxiosResponse<T>, D = any>(
