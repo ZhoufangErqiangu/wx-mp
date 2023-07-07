@@ -11,6 +11,7 @@ export interface Code2SessionRes extends BaseRes {
 }
 /**
  * 小程序登录
+ * 
  * https://developers.weixin.qq.com/miniprogram/dev/OpenApiDoc/user-login/code2Session.html
  */
 export async function code2Session(

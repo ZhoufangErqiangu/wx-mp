@@ -17,6 +17,7 @@ export interface GetUserPhoneNumberRes extends BaseRes {
 }
 /**
  * 获取手机号
+ * 
  * https://developers.weixin.qq.com/miniprogram/dev/OpenApiDoc/user-info/phone-number/getPhoneNumber.html
  */
 export async function getUserPhoneNumber(

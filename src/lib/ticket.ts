@@ -17,6 +17,7 @@ export interface GetTicketRes extends BaseRes {
 
 /**
  * 获取jsapi_ticket
+ * 
  * https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=ACCESS_TOKEN&type=jsapi
  */
 export async function getTicket(this: WxMp) {
@@ -35,6 +36,31 @@ export async function getTicket(this: WxMp) {
   if (data.ticket && data.expires_in) {
     this.ticketStore.ticket = data.ticket;
     this.ticketStore.expireAt = Date.now() + data.expires_in * 1000;
+  }
+  return this.ticket;
+}
+
+/**
+ * 获取卡券api_ticket
+ * 
+ * https://developers.weixin.qq.com/doc/offiaccount/OA_Web_Apps/JS-SDK.html#54
+ */
+export async function getCardTicket(this: WxMp) {
+  const { status, data } = await this.request<GetTicketRes>({
+    url: "/cgi-bin/ticket/getticket",
+    method: "get",
+    params: {
+      access_token: this.accessToken,
+      type: "wx_card",
+    },
+  });
+  if (status !== 200) throw new Error(`获取ticket 失败 ${status}`);
+  if (data.errcode) {
+    throw new Error(`获取ticket 错误 ${data.errcode} ${data.errmsg}`);
+  }
+  if (data.ticket && data.expires_in) {
+    this.cardTicketStore.ticket = data.ticket;
+    this.cardTicketStore.expireAt = Date.now() + data.expires_in * 1000;
   }
   return this.ticket;
 }

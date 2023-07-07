@@ -16,6 +16,7 @@ export interface GetQRCodeData {
 export type GetQRCodeRes = Buffer | BaseRes;
 /**
  * 获取QR码
+ * 
  * https://developers.weixin.qq.com/miniprogram/dev/OpenApiDoc/qrcode-link/qr-code/getQRCode.html
  */
 export async function getQRCode(this: WxMp, data: GetQRCodeData) {
