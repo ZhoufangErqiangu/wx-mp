@@ -22,7 +22,7 @@ import {
 } from "./accessToken";
 import { code2Session } from "./code2Session";
 import { getQRCode } from "./getQRCode";
-import { getSignature } from "./getSignature";
+import { getCardSignature, getSignature } from "./getSignature";
 import { getUserPhoneNumber } from "./getUserPhoneNumber";
 import { Ticket, checkTicketExpire, getTicket } from "./ticket";
 import { verifyToken } from "./verifyToken";
@@ -33,26 +33,31 @@ import { verifyToken } from "./verifyToken";
 export interface WxMpParam {
   /**
    * appid 在微信开放平台申请
+   *
    * https://developers.weixin.qq.com/doc/offiaccount/Basic_Information/Interface_field_description.html
    */
   appId: string;
   /**
    * app密钥 在微信开放平台申请
+   *
    * https://developers.weixin.qq.com/doc/offiaccount/Basic_Information/Interface_field_description.html
    */
   appSecret: string;
   /**
    * token 用于服务器验证
+   *
    * https://developers.weixin.qq.com/doc/offiaccount/Basic_Information/Access_Overview.html
    */
   token?: string;
   /**
    * 请求的地址, 覆盖默认地址
+   *
    * https://developers.weixin.qq.com/doc/offiaccount/Basic_Information/Interface_field_description.html
    */
   baseURL?: string;
   /**
    * 是否使用备用地址
+   *
    * https://developers.weixin.qq.com/doc/offiaccount/Basic_Information/Interface_field_description.html
    */
   useBackupBaseURL?: boolean;
@@ -150,6 +155,10 @@ export class WxMp {
    * 验证token
    */
   public verifyToken = verifyToken;
+  /**
+   * 卡券签名
+   */
+  public getCardSignature = getCardSignature;
 
   static normalizeUrl = normalizeUrl;
   public normalizeUrl = normalizeUrl;
@@ -204,6 +213,9 @@ export class WxMp {
    * access_token
    */
   public get accessToken() {
+    if (this.accessTokenStore.expireAt > Date.now()) {
+      throw new Error("access token expired");
+    }
     return this.accessTokenStore.token;
   }
 
@@ -211,7 +223,20 @@ export class WxMp {
    * ticket
    */
   public get ticket() {
+    if (this.ticketStore.expireAt > Date.now()) {
+      throw new Error("ticket expired");
+    }
     return this.ticketStore.ticket;
+  }
+
+  /**
+   * card ticket
+   */
+  public get cardTicket() {
+    if (this.cardTicketStore.expireAt > Date.now()) {
+      throw new Error("card ticket expired");
+    }
+    return this.cardTicketStore.ticket;
   }
 
   /**

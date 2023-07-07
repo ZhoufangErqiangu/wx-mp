@@ -12,9 +12,9 @@ test("signature", () => {
   expect(
     wxMp.getSignature({
       url: "http://mp.weixin.qq.com?params=value",
-      noncestr: "Wm3WZYTPz0wzccnW",
+      nonceStr: "Wm3WZYTPz0wzccnW",
       timestamp: "1414587457",
-      jsapi_ticket:
+      jsapiTicket:
         "sM4AOVdWfPE4DxkXGEs8VMCPGGVi4C3VM0P37wVUCFvkVAy_90u5h9nbSlYy3-Sl-HhTdfl2fzFy1AOcHKP7qg",
     }).signature,
   ).toBe("0f9de62fce790f9a083d5c99e95740ceb90c27ed");
@@ -58,4 +58,16 @@ test("verify token", () => {
       "1616797381",
     ),
   ).toBe("1939121145797148543");
+});
+
+test("card signature", () => {
+  expect(
+    wxMp.getCardSignature({
+      apiTicket: "ojZ8YtyVyr30HheH3CM73y7h4jJE",
+      code: "1434008071",
+      timestamp: "1404896688",
+      cardId: "pjZ8Yt1XGILfi-FUsewpnnolGgZk",
+      nonceStr: "123",
+    }).signature,
+  ).toBe("f137ab68b7f8112d20ee528ab6074564e2796250");
 });

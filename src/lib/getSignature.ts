@@ -2,8 +2,8 @@ import { createHash } from "crypto";
 import { WxMp } from ".";
 
 export interface GetSignatureData {
-  noncestr?: string;
-  jsapi_ticket?: string;
+  nonceStr?: string;
+  jsapiTicket?: string;
   timestamp?: string;
   url: string;
 }
@@ -15,21 +15,20 @@ export interface GetSignatureData {
  */
 export function getSignature(this: WxMp, data: GetSignatureData | string) {
   if (typeof data === "string") data = { url: data };
-  const jsapi_ticket = data.jsapi_ticket ?? this.ticket;
-  const url = this.normalizeUrl(data.url);
-  const nonceStr = data.noncestr ?? this.nonceStr;
-  const timestamp = data.timestamp ?? this.timestamp;
+  const {
+    jsapiTicket = this.ticket,
+    nonceStr = this.nonceStr,
+    timestamp = this.timestamp,
+    url,
+  } = data;
   const s = this.paramsToString({
-    jsapi_ticket,
+    jsapi_ticket: jsapiTicket,
     noncestr: nonceStr,
     timestamp,
     url,
   });
-  const c = createHash("sha1");
-  c.update(s);
-  const signature = c.digest("hex");
+  const signature = createHash("sha1").update(s).digest("hex");
   return {
-    jsapi_ticket,
     nonceStr,
     timestamp,
     url,
@@ -38,11 +37,12 @@ export function getSignature(this: WxMp, data: GetSignatureData | string) {
 }
 
 export interface GetCardSignatureData {
-  shopId?: string;
-  cardType?: string;
+  apiTicket?: string;
+  code?: string;
+  openId?: string;
   cardId?: string;
-  timestamp: number;
-  nonceStr: string;
+  timestamp?: string;
+  nonceStr?: string;
   signType?: "SHA1";
 }
 
@@ -52,5 +52,24 @@ export interface GetCardSignatureData {
  * https://developers.weixin.qq.com/doc/offiaccount/OA_Web_Apps/JS-SDK.html#54
  */
 export function getCardSignature(this: WxMp, data: GetCardSignatureData) {
-  // todo
+  const {
+    apiTicket = this.cardTicket,
+    code = "",
+    openId = "",
+    cardId = "",
+    timestamp = this.timestamp,
+    nonceStr = this.nonceStr,
+    signType = "SHA1",
+  } = data;
+  const s = [apiTicket, code, openId, cardId, timestamp, nonceStr]
+    .sort()
+    .join("");
+  const signature = createHash(signType.toLowerCase()).update(s).digest("hex");
+  return {
+    code,
+    openId,
+    nonceStr,
+    timestamp,
+    signature,
+  };
 }
