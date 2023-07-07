@@ -60,6 +60,17 @@ test("verify token", () => {
   ).toBe("1939121145797148543");
 });
 
+test("verify token error", () => {
+  expect(
+    wxMp.verifyToken(
+      "f469e2d31cebf3e7981727dbac4522ac3060252c1",
+      "1939121145797148543",
+      "1688384379",
+      "1616797381",
+    ),
+  ).toBe("error");
+});
+
 test("card signature", () => {
   expect(
     wxMp.getCardSignature({
