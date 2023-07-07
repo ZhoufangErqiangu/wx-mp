@@ -16,27 +16,17 @@ export function generateOAuthUrl(
   this: WxMp,
   param: GenerateUrlParam | OAuthScope,
 ) {
+  if (typeof param === "string") param = { scope: param };
+  const { redirectUrl = this.redirectUrl, scope, state, forcePopup } = param;
+  if (!redirectUrl) throw new Error("必须输入redirectUrl");
   const url = new URL("https://open.weixin.qq.com/connect/oauth2/authorize");
   url.hash = "#wechat_redirect";
   url.searchParams.set("appid", this.appId);
   url.searchParams.set("response_type", "code");
-  if (typeof param === "string") {
-    if (!this.redirectUrl) throw new Error("必须输入redirectUrl");
-    url.searchParams.set("redirect_uri", this.redirectUrl);
-    url.searchParams.set("scope", param);
-  } else {
-    if (!param.redirectUrl && !this.redirectUrl) {
-      throw new Error("必须输入redirectUrl");
-    }
-    url.searchParams.set(
-      "redirect_uri",
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      (param.redirectUrl ?? this.redirectUrl)!,
-    );
-    url.searchParams.set("scope", param.scope);
-    if (param.state) url.searchParams.set("state", param.state);
-    if (param.forcePopup) url.searchParams.set("forcePopup", "true");
-  }
+  url.searchParams.set("redirect_uri", redirectUrl);
+  url.searchParams.set("scope", scope);
+  if (state) url.searchParams.set("state", state);
+  if (forcePopup) url.searchParams.set("forcePopup", "true");
   return url.toString();
 }
 
