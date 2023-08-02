@@ -1,17 +1,17 @@
-# 告诉EditorConfig插件，这是根文件，不用继续往上查找
+# 告诉EditorConfig插件, 这是根文件, 不用继续往上查找
 root = true
 
 # 匹配全部文件
 [*]
 # 设置字符集
 charset = utf-8
-# 缩进风格，可选space、tab
+# 缩进风格, 可选space、tab
 indent_style = space
 # 缩进的空格数
 indent_size = 2
 # 用一个整数来设置tab缩进的列数。默认是indent_size
 tab_width = 2
-# 结尾换行符，可选lf、cr、crlf
+# 结尾换行符, 可选lf、cr、crlf
 end_of_line = lf
 # 在文件结尾插入新行
 insert_final_newline = true
