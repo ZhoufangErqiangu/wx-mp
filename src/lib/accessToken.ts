@@ -16,7 +16,7 @@ export interface GetAccessTokenRes extends BaseRes {
 }
 /**
  * 获取接口调用凭据
- * 
+ *
  * https://developers.weixin.qq.com/doc/offiaccount/Basic_Information/Get_access_token.html
  *
  * https://developers.weixin.qq.com/miniprogram/dev/OpenApiDoc/mp-access-token/getAccessToken.html
