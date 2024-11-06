@@ -185,3 +185,6 @@ ghPagesPre.sh
 
 # ignore entire github-page
 github-page/
+
+# ignore cert
+cert/
