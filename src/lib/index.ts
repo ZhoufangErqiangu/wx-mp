@@ -9,13 +9,6 @@ import { normalizeUrl } from "../util/normalizeUrl";
 import { paramsToString } from "../util/paramsToString";
 import { timestamp } from "../util/timestamp";
 import {
-  checkOAuthAccessToken,
-  generateOAuthUrl,
-  getOAuthAccessToken,
-  getOAuthUserInfo,
-  getRefreshOAuthAccessToken,
-} from "./oAuth";
-import {
   AccessToken,
   checkAccessTokenExpire,
   getAccessToken,
@@ -24,6 +17,14 @@ import { code2Session } from "./code2Session";
 import { getQRCode } from "./getQRCode";
 import { getCardSignature, getSignature } from "./getSignature";
 import { getUserPhoneNumber } from "./getUserPhoneNumber";
+import {
+  checkOAuthAccessToken,
+  generateOAuthUrl,
+  getOAuthAccessToken,
+  getOAuthUserInfo,
+  getRefreshOAuthAccessToken,
+} from "./oAuth";
+import { postQRCode } from "./postQRCode";
 import { Ticket, checkTicketExpire, getTicket } from "./ticket";
 import { verifyToken } from "./verifyToken";
 
@@ -159,6 +160,10 @@ export class WxMp {
    * 卡券签名
    */
   public getCardSignature = getCardSignature;
+  /**
+   * 创建带参数的二维码
+   */
+  public postQRCode = postQRCode;
 
   static normalizeUrl = normalizeUrl;
   public normalizeUrl = normalizeUrl;
