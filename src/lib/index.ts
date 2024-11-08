@@ -218,11 +218,8 @@ export class WxMp {
    * access_token
    */
   public get accessToken(): string | null {
-    if (this.accessTokenStore.expireAt === 0) {
-      return null;
-    }
-    if (this.accessTokenStore.expireAt > Date.now()) {
-      throw new Error("access token expired");
+    if (this.accessTokenStore.expireAt < Date.now()) {
+      throw new Error(`access token expired ${this.accessTokenStore.expireAt}`);
     }
     return this.accessTokenStore.token;
   }
@@ -231,11 +228,8 @@ export class WxMp {
    * ticket
    */
   public get ticket(): string | null {
-    if (this.ticketStore.expireAt === 0) {
-      return null;
-    }
-    if (this.ticketStore.expireAt > Date.now()) {
-      throw new Error("ticket expired");
+    if (this.ticketStore.expireAt < Date.now()) {
+      throw new Error(`ticket expired ${this.ticketStore.expireAt}`);
     }
     return this.ticketStore.ticket;
   }
@@ -244,11 +238,8 @@ export class WxMp {
    * card ticket
    */
   public get cardTicket(): string | null {
-    if (this.cardTicketStore.expireAt === 0) {
-      return null;
-    }
-    if (this.cardTicketStore.expireAt > Date.now()) {
-      throw new Error("card ticket expired");
+    if (this.cardTicketStore.expireAt < Date.now()) {
+      throw new Error(`card ticket expired ${this.cardTicketStore.expireAt}`);
     }
     return this.cardTicketStore.ticket;
   }
