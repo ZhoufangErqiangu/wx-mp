@@ -13,6 +13,7 @@ import {
   checkAccessTokenExpire,
   getAccessToken,
 } from "./accessToken";
+import { checkSignature } from "./checkSignature";
 import { code2Session } from "./code2Session";
 import { getQRCode } from "./getQRCode";
 import { getCardSignature, getSignature } from "./getSignature";
@@ -26,7 +27,6 @@ import {
 } from "./oAuth";
 import { postQRCode } from "./postQRCode";
 import { Ticket, checkTicketExpire, getTicket } from "./ticket";
-import { verifyToken } from "./verifyToken";
 
 /**
  * 微信开放平台参数
@@ -153,9 +153,9 @@ export class WxMp {
    */
   public checkOAuthAccessToken = checkOAuthAccessToken;
   /**
-   * 验证token
+   * 验证签名
    */
-  public verifyToken = verifyToken;
+  public checkSignature = checkSignature;
   /**
    * 卡券签名
    */
