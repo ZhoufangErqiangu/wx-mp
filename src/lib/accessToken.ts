@@ -35,9 +35,13 @@ export async function getAccessToken(this: WxMp) {
   if (data.errcode) {
     throw new Error(`获取接口调用凭据 错误 ${data.errcode} ${data.errmsg}`);
   }
+  let token: string | null = null;
   if (data.access_token && data.expires_in) {
-    this.accessTokenStore.token = data.access_token;
-    this.accessTokenStore.expireAt = Date.now() + data.expires_in * 1000;
+    token = data.access_token;
+    this.accessTokenStore = {
+      token: data.access_token,
+      expireAt: Date.now() + data.expires_in * 1000,
+    };
   }
-  return this.accessToken;
+  return token;
 }

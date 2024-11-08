@@ -17,7 +17,7 @@ export interface GetTicketRes extends BaseRes {
 
 /**
  * 获取jsapi_ticket
- * 
+ *
  * https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=ACCESS_TOKEN&type=jsapi
  */
 export async function getTicket(this: WxMp) {
@@ -33,16 +33,20 @@ export async function getTicket(this: WxMp) {
   if (data.errcode) {
     throw new Error(`获取ticket 错误 ${data.errcode} ${data.errmsg}`);
   }
+  let ticket: string | null = null;
   if (data.ticket && data.expires_in) {
-    this.ticketStore.ticket = data.ticket;
-    this.ticketStore.expireAt = Date.now() + data.expires_in * 1000;
+    ticket = data.ticket;
+    this.ticketStore = {
+      ticket: data.ticket,
+      expireAt: Date.now() + data.expires_in * 1000,
+    };
   }
-  return this.ticket;
+  return ticket;
 }
 
 /**
  * 获取卡券api_ticket
- * 
+ *
  * https://developers.weixin.qq.com/doc/offiaccount/OA_Web_Apps/JS-SDK.html#54
  */
 export async function getCardTicket(this: WxMp) {
@@ -58,9 +62,13 @@ export async function getCardTicket(this: WxMp) {
   if (data.errcode) {
     throw new Error(`获取ticket 错误 ${data.errcode} ${data.errmsg}`);
   }
+  let ticket: string | null = null;
   if (data.ticket && data.expires_in) {
-    this.cardTicketStore.ticket = data.ticket;
-    this.cardTicketStore.expireAt = Date.now() + data.expires_in * 1000;
+    ticket = data.ticket;
+    this.cardTicketStore = {
+      ticket: data.ticket,
+      expireAt: Date.now() + data.expires_in * 1000,
+    };
   }
-  return this.ticket;
+  return ticket;
 }
