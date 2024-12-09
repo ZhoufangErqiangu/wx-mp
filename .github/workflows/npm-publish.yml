@@ -30,6 +30,7 @@ jobs:
       - name: Install dependencies and build
         run: |
           yarn install --lock
+          yarn run test
           yarn run build
 
       - name: Publish to npm
