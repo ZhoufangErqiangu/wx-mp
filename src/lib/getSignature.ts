@@ -1,5 +1,8 @@
 import { createHash } from "crypto";
-import { WxMp } from ".";
+import { WxMp } from "..";
+import { nonceStr } from "../util/nonceStr";
+import { paramsToString } from "../util/paramsToString";
+import { timestamp } from "../util/timestamp";
 
 export interface GetSignatureData {
   nonceStr?: string;
@@ -15,16 +18,11 @@ export interface GetSignatureData {
  */
 export function getSignature(this: WxMp, data: GetSignatureData | string) {
   if (typeof data === "string") data = { url: data };
-  const {
-    jsapiTicket = this.ticket,
-    nonceStr = this.nonceStr,
-    timestamp = this.timestamp,
-    url,
-  } = data;
-  const s = this.paramsToString({
-    jsapi_ticket: jsapiTicket,
-    noncestr: nonceStr,
-    timestamp,
+  const { jsapiTicket: jt, nonceStr: n, timestamp: t, url } = data;
+  const s = paramsToString({
+    jsapi_ticket: jt ?? this.ticket,
+    noncestr: n ?? nonceStr(),
+    timestamp: t ?? timestamp(),
     url,
   });
   const signature = createHash("sha1").update(s).digest("hex");
@@ -53,23 +51,23 @@ export interface GetCardSignatureData {
  */
 export function getCardSignature(this: WxMp, data: GetCardSignatureData) {
   const {
-    apiTicket = this.cardTicket,
+    apiTicket: ct,
     code = "",
     openId = "",
     cardId = "",
-    timestamp = this.timestamp,
-    nonceStr = this.nonceStr,
+    timestamp: t,
+    nonceStr: n,
     signType = "SHA1",
   } = data;
-  const s = [apiTicket, code, openId, cardId, timestamp, nonceStr]
-    .sort()
-    .join("");
+  const tt = t ?? timestamp();
+  const nn = n ?? nonceStr();
+  const s = [ct, code, openId, cardId, tt, nn].sort().join("");
   const signature = createHash(signType.toLowerCase()).update(s).digest("hex");
   return {
     code,
     openId,
-    nonceStr,
-    timestamp,
+    timestamp: tt,
+    nonceStr: nn,
     signature,
   };
 }

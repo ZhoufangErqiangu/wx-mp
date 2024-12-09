@@ -1,5 +1,5 @@
-import { WxMp } from ".";
 import { createHash } from "crypto";
+import { WxMp } from "..";
 
 export function checkSignature(
   this: WxMp,

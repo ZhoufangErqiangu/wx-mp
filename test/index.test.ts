@@ -1,4 +1,4 @@
-import { strictEqual } from "node:assert";
+import assert, { strictEqual } from "node:assert";
 import { describe, test } from "node:test";
 import { WxMp } from "../src";
 
@@ -29,7 +29,6 @@ describe("test", () => {
       "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx807d86fb6b3d4fd2&response_type=code&redirect_uri=http%3A%2F%2Fdevelopers.weixin.qq.com&scope=snsapi_userinfo#wechat_redirect",
     );
   });
-
   test("oauth url", () => {
     strictEqual(
       wxMp.generateOAuthUrl({
@@ -39,7 +38,6 @@ describe("test", () => {
       "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx807d86fb6b3d4fd2&response_type=code&redirect_uri=http%3A%2F%2Fdevelopers.weixin.qq.com&scope=snsapi_userinfo#wechat_redirect",
     );
   });
-
   test("oauth url", () => {
     strictEqual(
       wxMp.generateOAuthUrl({
@@ -52,26 +50,23 @@ describe("test", () => {
   });
 
   test("verify token", () => {
-    strictEqual(
-      wxMp.verifyToken(
+    assert(
+      wxMp.checkSignature(
         "f469e2d31cebf3e7981727dbac4522ac3060252c",
-        "1939121145797148543",
         "1688384379",
         "1616797381",
       ),
-      "1939121145797148543",
+      "check signature error",
     );
   });
-
   test("verify token error", () => {
-    strictEqual(
-      wxMp.verifyToken(
+    assert(
+      !wxMp.checkSignature(
         "f469e2d31cebf3e7981727dbac4522ac3060252c1",
-        "1939121145797148543",
         "1688384379",
         "1616797381",
       ),
-      "error",
+      "check signature error",
     );
   });
 

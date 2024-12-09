@@ -1,4 +1,4 @@
-import { WxMp } from ".";
+import { WxMp } from "..";
 import { BaseRes } from "./baseRes";
 
 export type OAuthScope = "snsapi_base" | "snsapi_userinfo";

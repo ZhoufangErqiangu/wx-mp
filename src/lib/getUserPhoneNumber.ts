@@ -1,4 +1,4 @@
-import { WxMp } from ".";
+import { WxMp } from "..";
 import { BaseRes } from "./baseRes";
 
 export interface GetUserPhoneNumberData {
