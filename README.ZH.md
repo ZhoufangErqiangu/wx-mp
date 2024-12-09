@@ -91,6 +91,22 @@ const ticket = await wxMp.getTicket();
 const ticket = wxMp.checkTicketExpire() ? await wxMp.getTicket() : wxMp.ticket;
 ```
 
+### 验证服务器
+
+在微信公众号或微信开放平台填写服务器信息后，微信会向服务器发送验证信息
+
+```typescript
+function getWxMap(req: Request, res: Response) {
+  const { signature, timestamp, nonce, echostr } = req.query;
+  const s = wxMp.checkSignature(signature, timestamp, nonce);
+  if (s) {
+    res.send(echostr);
+  } else {
+    res.send("error");
+  }
+}
+```
+
 ### URL 签名
 
 对微信打开的页面 URL 进行签名
@@ -245,7 +261,7 @@ export function buildLoginUrl(options: BuildLoginUrlOptions = {}) {
 const url = buildLoginUrl();
 ```
 
-前端使用iframe展示上述url
+前端使用 iframe 展示上述 url
 
 ```typescript
 const wxMp = new WxMp({
