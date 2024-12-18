@@ -31,7 +31,9 @@ export async function getQRCode(this: WxMp, data: GetQRCodeData) {
   });
   if (status !== 200) throw new Error(`获取QR码 失败 ${status}`);
   if (!(res instanceof Buffer)) {
-    throw new Error(`获取QR码 错误 ${res.errcode} ${res.errmsg}`);
+    throw new Error(
+      `获取QR码 错误 ${(res as BaseRes).errcode} ${(res as BaseRes).errmsg}`,
+    );
   }
   return res;
 }
