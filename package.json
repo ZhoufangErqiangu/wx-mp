@@ -24,7 +24,7 @@
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "push": "yarn version --patch && git push",
-    "test": "ts-node ./test/index.test.ts && ts-node ./test/util.test.ts"
+    "test": "ts-node ./tests/index.test.ts && ts-node ./tests/util.test.ts"
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",
